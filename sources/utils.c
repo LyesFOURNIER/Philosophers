@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:09:26 by lfournie          #+#    #+#             */
-/*   Updated: 2025/07/22 12:01:45 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:16:46 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_atoi(const char *nptr)
 	return (0);
 }
 
-void	philo_lst_add(t_philo **lst, t_philo *new)
+/* void	philo_lst_add(t_philo **lst, t_philo *new)
 {
 	t_philo	*head;
 	t_philo	*cursor;
@@ -62,23 +62,19 @@ void	philo_lst_add(t_philo **lst, t_philo *new)
 		new->next = head;
 		head->prev = new;
 	}
-}
+} */
 
-t_philo	*init_philo_lst_node(void)
+t_philo	*init_philo_lst_node(int i)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)malloc(sizeof(t_philo));
 	if (!philo)
 		return (NULL);
-	philo->fork_left = true;
-	philo->fork_right = true;
 	philo->is_dead = false;
 	philo->is_eating = false;
 	philo->is_sleeping = false;
 	philo->is_thinking = false;
-	philo->next = NULL;
-	philo->prev = NULL;
 	return (philo);
 }
 
@@ -90,5 +86,5 @@ void	init_data_struct(t_data **data, char **args)
 	(*data)->tt_sleep = ft_atoi(args[4]);
 	if (args[5])
 		(*data)->satiated = ft_atoi(args[5]);
-	(*data)->philo_lst = NULL;
+	
 }
