@@ -6,7 +6,7 @@
 #    By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 09:39:53 by yukravch          #+#    #+#              #
-#    Updated: 2025/07/17 14:57:17 by lfournie         ###   ########.fr        #
+#    Updated: 2025/08/28 10:49:14 by lfournie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRC_DIR = sources
 OBJ_DIR = objects
 INC_DIR = -I includes
 
-FILES = main.c utils.c \
+FILES = main.c utils.c err_handler.c free_handler.c \
+		routine/routine.c routine/routine_utils.c \
  
 SRC = $(addprefix $(SRC_DIR)/, $(FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))

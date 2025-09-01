@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:54:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/07/22 15:18:42 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/01 14:43:49 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,69 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <sys/time.h>
+# include <unistd.h>
 
 typedef struct s_philo
 {
-	int				philo_nbr;
-	bool			is_eating;
-	bool			is_sleeping;
-	bool			is_thinking;
+	pthread_t		thread;
+	int				philo_id;
+	long			tt_die;
+	long			tt_eat;
+	long			tt_sleep;
+	int				min_to_eat;
+	int				nb_of_meal;
+	long			last_meal;
 	bool			is_dead;
-	pthread_mutex_t fork_left;
-	pthread_mutex_t fork_right
+	pthread_mutex_t	philo_data;
+	struct s_data	*data;
+	
 }	t_philo;
 
 typedef struct s_data
 {
-	int		nb_philo;
-	int		tt_die;
-	int		tt_eat;
-	int		tt_sleep;
-	int		satiated;
-	t_philo	*philo;
+	pthread_t		monitor;
+	bool			run_sim;
+	int				nb_philo;
+	long			tt_die;
+	long			tt_eat;
+	long			tt_sleep;
+	int				min_to_eat;
+	int				satiated;
+	bool			stop;
+	t_philo			*philo;
+	pthread_mutex_t data;
+	pthread_mutex_t print;
+	pthread_mutex_t	*forks;
 }	t_data;
+
+//ROUTINE
+///////
+void	*routine(void *args);
+bool	check_if_dead(t_philo *philo);
+time_t	get_time(void);
+bool	ft_eat(t_philo *philo, long start_time);
+bool	ft_sleep(t_philo *philo, long start_time);
+bool	ft_think(t_philo *philo, long start_time);
+void	ft_die(t_philo *philo, long start_time);
+///////
 
 //UTILS
 ///////
 int		ft_atoi(const char *nptr);
-void	philo_lst_add(t_philo **lst, t_philo *new);
-void	init_data_struct(t_data **data, char **args);
-t_philo	*init_philo_lst_node(int i);
+t_data	*init_data_struct(char **args);
+t_philo	*init_philo_struct(t_data *data, int i);
+///////
+
+//ERR_HANDLER
+///////
+bool	check_args(char **args);
+void	wrong_usage(void);
+///////
+
+//FREE_HANDLER
+///////
+void	free_philo_tab(t_philo **tab, int size);
 ///////
 
 #endif
