@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:54:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/01 14:43:49 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/02 16:03:45 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_philo
 	long			tt_die;
 	long			tt_eat;
 	long			tt_sleep;
+	long			tt_think;
 	int				min_to_eat;
 	int				nb_of_meal;
 	long			last_meal;
@@ -47,7 +48,8 @@ typedef struct s_data
 	int				min_to_eat;
 	int				satiated;
 	bool			stop;
-	t_philo			*philo;
+	int				free_size;
+	t_philo			**philo_tab;
 	pthread_mutex_t data;
 	pthread_mutex_t print;
 	pthread_mutex_t	*forks;
@@ -56,8 +58,6 @@ typedef struct s_data
 //ROUTINE
 ///////
 void	*routine(void *args);
-bool	check_if_dead(t_philo *philo);
-time_t	get_time(void);
 bool	ft_eat(t_philo *philo, long start_time);
 bool	ft_sleep(t_philo *philo, long start_time);
 bool	ft_think(t_philo *philo, long start_time);
@@ -69,6 +69,10 @@ void	ft_die(t_philo *philo, long start_time);
 int		ft_atoi(const char *nptr);
 t_data	*init_data_struct(char **args);
 t_philo	*init_philo_struct(t_data *data, int i);
+void	get_fork(t_philo *philo);
+void	put_down_forks(t_philo *philo);
+bool	check_if_dead(t_philo *philo);
+time_t	get_time(void);
 ///////
 
 //ERR_HANDLER
@@ -79,7 +83,10 @@ void	wrong_usage(void);
 
 //FREE_HANDLER
 ///////
-void	free_philo_tab(t_philo **tab, int size);
+void	join_thread(t_data *data, int size);
+void	free_philo_tab(t_philo **ptab, int size);
+void	free_forks_tab(pthread_mutex_t	*ftab, int size);
+void	free_all(t_data *data, int fr_thrd, int fr_ph, int fr_frk);
 ///////
 
 #endif
