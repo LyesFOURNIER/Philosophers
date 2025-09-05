@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:56:41 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 15:24:42 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/05 16:17:36 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	check_args(char **args)
 
 void	wrong_usage(void)
 {
-	printf("Usage: ./philo|Number of philosophers (>= 0 && < 200)|");
+	printf("Usage: ./philo|Number of philosophers (>= 0 && <= 200)|");
 	printf("Time to die in ms (>= 0)|");
 	printf("Time to eat in ms (>= 0)|Time to sleep in ms (>= 0)|");
 	printf("\n(optional)Minimum number of meal per philosopher (>= 0)\n");
@@ -33,17 +33,12 @@ void	wrong_usage(void)
 
 bool	are_threads_created(t_data *data, int i)
 {
-	if (i != -3)
+	if (i != -2)
 	{
-		if (i == -2)
+		if (i == -1)
 		{
 			pthread_mutex_unlock(&data->m_data);
 			return (free_all(data, 0, 1, 1), false);
-		}
-		else if (i == -1)
-		{
-			pthread_mutex_unlock(&data->m_data);
-			return (join_thread(data, 0), free_all(data, 0, 1, 1), false);
 		}
 		else
 		{

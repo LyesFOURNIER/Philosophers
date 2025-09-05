@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:24:40 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 15:24:58 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:53:28 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	join_thread(t_data *data, int size)
 
 	i = 0;
 	pthread_join(data->monitor, NULL);
-	while (i <= size)
+	while (i < size)
 	{
 		pthread_join(data->philo_tab[i]->thread, NULL);
 		i++;

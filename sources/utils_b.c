@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:47:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 15:33:50 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/05 16:53:31 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ time_t	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-bool	safe_mutex_lock(t_philo *philo, unsigned long s_t, pthread_mutex_t *m)
+bool	safe_mutex_lock(t_philo *philo, pthread_mutex_t *m)
 {
 	pthread_mutex_lock(&philo->data->m_data);
 	if (!philo->data->is_running)
@@ -36,11 +36,14 @@ bool	safe_mutex_lock(t_philo *philo, unsigned long s_t, pthread_mutex_t *m)
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->data->m_data);
+	pthread_mutex_lock(&philo->m_philo);
 	if ((get_time() - philo->last_meal) >= philo->tt_die)
 	{
-		ft_die(philo, s_t);
+		philo->is_dead = true;
+		pthread_mutex_unlock(&philo->m_philo);
 		return (false);
 	}
+	pthread_mutex_unlock(&philo->m_philo);
 	pthread_mutex_lock(m);
 	return (true);
 }

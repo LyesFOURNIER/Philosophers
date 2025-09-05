@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:54:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 15:23:33 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/05 16:41:48 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ bool	get_fork(t_philo *philo, unsigned long start_time);
 void	put_down_forks(t_philo *philo);
 bool	check_if_dead(t_philo *philo);
 time_t	get_time(void);
-bool	safe_mutex_lock(t_philo *philo, unsigned long s_t, pthread_mutex_t *m);
+bool	safe_mutex_lock(t_philo *philo, pthread_mutex_t *m);
 ///////
 
 //ERR_HANDLER

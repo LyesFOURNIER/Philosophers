@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:55:50 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 15:24:24 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:54:49 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	create_threads(t_data *data)
 
 	i = 0;
 	if (pthread_create(&data->monitor, NULL, m_routine, (void *)data))
-		return (-2);
+		return (-1);
 	while (i < data->nb_philo)
 	{
 		if (pthread_create(&data->philo_tab[i]->thread, NULL,
 				routine, (void *)data->philo_tab[i]))
-			return (i - 1);
+			return (i);
 		i++;
 	}
-	return (-3);
+	return (-2);
 }
 
 int	main(int ac, char **av)

@@ -6,13 +6,13 @@
 #    By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 09:39:53 by yukravch          #+#    #+#              #
-#    Updated: 2025/09/05 15:22:30 by lfournie         ###   ########.fr        #
+#    Updated: 2025/09/05 16:18:33 by lfournie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra $(INC_DIR) -pthread
+CFLAGS = -Wall -Werror -Wextra $(INC_DIR) -pthread -g3
 
 all: $(NAME)
 SRC_DIR = sources
