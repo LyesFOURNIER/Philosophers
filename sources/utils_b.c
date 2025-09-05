@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:47:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/02 16:09:07 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:33:50 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,51 +27,20 @@ time_t	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	get_fork(t_philo *philo)
+bool	safe_mutex_lock(t_philo *philo, unsigned long s_t, pthread_mutex_t *m)
 {
-	int	i;
-	
-	i = philo->philo_id;
-	if (i % 2 == 0)
+	pthread_mutex_lock(&philo->data->m_data);
+	if (!philo->data->is_running)
 	{
-		if (i < philo->data->nb_philo)
-			pthread_mutex_lock(&philo->data->forks[i + 1]);
-		else if (i == philo->data->nb_philo)
-			pthread_mutex_lock(&philo->data->forks[0]);
-		//check if sim still going
-		//if not dont lock mutex
-		//needs to code the function safe_mutex_lock
-		pthread_mutex_lock(&philo->data->forks[i]);
+		pthread_mutex_unlock(&philo->data->m_data);
+		return (false);
 	}
-	else if (i % 2 == 1)
+	pthread_mutex_unlock(&philo->data->m_data);
+	if ((get_time() - philo->last_meal) >= philo->tt_die)
 	{
-		if (i > 0)
-			pthread_mutex_lock(&philo->data->forks[i - 1]);
-		else if (i == 0)
-			pthread_mutex_lock(&philo->data->forks[philo->data->nb_philo]);
-		pthread_mutex_lock(&philo->data->forks[i]);
+		ft_die(philo, s_t);
+		return (false);
 	}
-}
-
-void	put_down_forks(t_philo *philo)
-{
-	int	i;
-	
-	i = philo->philo_id;
-	if (i % 2 == 0)
-	{
-		if (i < philo->data->nb_philo)
-			pthread_mutex_unlock(&philo->data->forks[i + 1]);
-		else if (i == philo->data->nb_philo)
-			pthread_mutex_unlock(&philo->data->forks[0]);
-		pthread_mutex_unlock(&philo->data->forks[i]);
-	}
-	else if (i % 2 == 1)
-	{
-		if (i > 0)
-			pthread_mutex_unlock(&philo->data->forks[i - 1]);
-		else if (i == 0)
-			pthread_mutex_unlock(&philo->data->forks[philo->data->nb_philo]);
-		pthread_mutex_unlock(&philo->data->forks[i]);
-	}
+	pthread_mutex_lock(m);
+	return (true);
 }
