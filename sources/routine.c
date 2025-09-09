@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:41:44 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 17:00:17 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/09 10:46:30 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ bool	ft_eat(t_philo *philo, unsigned long start_time)
 	if (!safe_mutex_lock(philo, &philo->m_philo))
 		return (put_down_forks(philo), false);
 	philo->nb_of_meal++;
+	if (philo->nb_of_meal == philo->min_to_eat)
+		philo->satiated = true;
 	pthread_mutex_unlock(&philo->m_philo);
 	usleep(philo->tt_eat * 1000);
 	put_down_forks(philo);
@@ -62,9 +64,6 @@ bool	ft_think(t_philo *philo, unsigned long start_time)
 
 void	ft_die(t_philo *philo, unsigned long start_time)
 {
-	pthread_mutex_lock(&philo->m_philo);
-	philo->is_dead = true;
-	pthread_mutex_unlock(&philo->m_philo);
 	pthread_mutex_lock(&philo->data->m_print);
 	printf("%zu %d died\n", get_time() - start_time, philo->philo_id + 1);
 	pthread_mutex_unlock(&philo->data->m_print);
@@ -79,12 +78,7 @@ void	*routine(void *args)
 	pthread_mutex_lock(&philo->data->m_data);
 	start_time = philo->data->start_time;
 	if (philo->data->nb_philo == 1)
-	{
-		usleep(philo->tt_die * 1000);
-		ft_die(philo, start_time);
-		pthread_mutex_unlock(&philo->data->m_data);
-		return (NULL);
-	}
+		return (solo_bolo(philo), NULL);
 	pthread_mutex_unlock(&philo->data->m_data);
 	philo->last_meal = get_time();
 	while (1)

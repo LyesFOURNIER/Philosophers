@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 10:44:10 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 16:47:46 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/09 10:50:26 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ void	m_subsubroutine(t_data *data, int i)
 {
 	pthread_mutex_lock(&data->m_data);
 	pthread_mutex_lock(&data->philo_tab[i]->m_philo);
-	if (data->philo_tab[i]->nb_of_meal >= data->min_to_eat)
+	if (data->philo_tab[i]->satiated)
+	{
+		data->philo_tab[i]->satiated = false;
 		data->satiated++;
+	}
 	if (data->philo_tab[i]->is_dead)
 	{
 		pthread_mutex_lock(&data->m_print);

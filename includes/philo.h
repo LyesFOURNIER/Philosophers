@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:54:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 16:41:48 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/09 10:39:33 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef struct s_philo
 	unsigned long	tt_sleep;
 	unsigned long	tt_think;
 	int				nb_of_meal;
+	int				min_to_eat;
+	bool			satiated;
 	unsigned long	last_meal;
 	bool			is_dead;
 	pthread_mutex_t	m_philo;
@@ -73,8 +75,9 @@ t_philo	*init_philo_struct(t_data *data, int i);
 bool	get_fork(t_philo *philo, unsigned long start_time);
 void	put_down_forks(t_philo *philo);
 bool	check_if_dead(t_philo *philo);
-time_t	get_time(void);
 bool	safe_mutex_lock(t_philo *philo, pthread_mutex_t *m);
+time_t	get_time(void);
+void	solo_bolo(t_philo *philo);
 ///////
 
 //ERR_HANDLER

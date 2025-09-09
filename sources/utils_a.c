@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:09:26 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 15:33:16 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/09 10:39:48 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ t_philo	*init_philo_struct(t_data *data, int i)
 	philo->tt_eat = data->tt_eat;
 	philo->tt_sleep = data->tt_sleep;
 	philo->nb_of_meal = 0;
+	philo->min_to_eat = data->min_to_eat;
+	philo->satiated = false;
 	pthread_mutex_init(&philo->m_philo, NULL);
 	philo->data = data;
 	return (philo);
