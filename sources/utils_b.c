@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 11:47:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/09 10:46:56 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/10 11:24:43 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,19 @@ bool	safe_mutex_lock(t_philo *philo, pthread_mutex_t *m)
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->data->m_data);
-	pthread_mutex_lock(&philo->m_philo);
-	if ((get_time() - philo->last_meal) >= philo->tt_die)
-	{
-		philo->is_dead = true;
-		pthread_mutex_unlock(&philo->m_philo);
-		return (false);
-	}
-	pthread_mutex_unlock(&philo->m_philo);
 	pthread_mutex_lock(m);
 	return (true);
 }
 
 void	solo_bolo(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->m_fork[0]);
+	pthread_mutex_lock(&philo->data->m_print);
+	printf("%zu %d has taken a fork\n", get_time() - philo->data->start_time,
+		philo->philo_id + 1);
+	pthread_mutex_unlock(&philo->data->m_print);
 	usleep(philo->tt_die * 1000);
+	pthread_mutex_unlock(&philo->data->m_fork[0]);
 	pthread_mutex_lock(&philo->m_philo);
 	philo->is_dead = true;
 	pthread_mutex_unlock(&philo->m_philo);

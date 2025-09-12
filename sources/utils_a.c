@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:09:26 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/09 10:39:48 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/12 11:50:57 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_philo	*init_philo_struct(t_data *data, int i)
 	philo->nb_of_meal = 0;
 	philo->min_to_eat = data->min_to_eat;
 	philo->satiated = false;
+	philo->last_meal = data->start_time;
 	pthread_mutex_init(&philo->m_philo, NULL);
 	philo->data = data;
 	return (philo);
@@ -107,7 +108,8 @@ t_data	*init_data_struct(char **args)
 	else
 		data->min_to_eat = -1;
 	data->satiated = 0;
-	data->is_running = false;
+	data->is_running = true;
+	data->start_time = get_time();
 	data->philo_tab = (t_philo **)malloc(sizeof(t_philo) * data->nb_philo);
 	if (!data->philo_tab)
 		return (free(data), NULL);

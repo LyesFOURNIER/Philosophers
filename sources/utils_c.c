@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 15:26:30 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/05 16:44:22 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/12 11:50:21 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@ bool	get_fork_even(t_philo *philo, unsigned long start_time, int i)
 
 bool	get_fork_uneven(t_philo *philo, unsigned long start_time, int i)
 {
-	if (i > 0)
-		if (!safe_mutex_lock(philo, &philo->data->m_fork[i - 1]))
+	if (i < philo->data->nb_philo - 1)
+		if (!safe_mutex_lock(philo, &philo->data->m_fork[i + 1]))
 			return (false);
-	if (i == 0)
+	if (i == philo->data->nb_philo - 1)
 		if (!safe_mutex_lock(philo,
-				&philo->data->m_fork[philo->data->nb_philo]))
+				&philo->data->m_fork[0]))
 			return (false);
 	print_fork(philo, start_time, i);
 	if (!safe_mutex_lock(philo, &philo->data->m_fork[i]))
 	{
 		if (i > 0)
 		{
-			pthread_mutex_unlock(&philo->data->m_fork[i - 1]);
+			pthread_mutex_unlock(&philo->data->m_fork[i + 1]);
 			return (false);
 		}
 		else if (i == 0)
@@ -106,10 +106,10 @@ void	put_down_forks(t_philo *philo)
 	}
 	else if (i % 2 == 1)
 	{
-		if (i > 0)
-			pthread_mutex_unlock(&philo->data->m_fork[i - 1]);
-		else if (i == 0)
-			pthread_mutex_unlock(&philo->data->m_fork[philo->data->nb_philo]);
+		if (i < philo->data->nb_philo - 1)
+			pthread_mutex_unlock(&philo->data->m_fork[i + 1]);
+		else if (i == philo->data->nb_philo - 1)
+			pthread_mutex_unlock(&philo->data->m_fork[0]);
 		pthread_mutex_unlock(&philo->data->m_fork[i]);
 	}
 }

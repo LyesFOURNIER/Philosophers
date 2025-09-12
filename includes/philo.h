@@ -6,7 +6,7 @@
 /*   By: lfournie <lfournie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 11:54:59 by lfournie          #+#    #+#             */
-/*   Updated: 2025/09/09 10:39:33 by lfournie         ###   ########.fr       */
+/*   Updated: 2025/09/12 11:48:07 by lfournie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_philo
 	bool			satiated;
 	unsigned long	last_meal;
 	bool			is_dead;
+	pthread_mutex_t	l_fork;
+	pthread_mutex_t	r_fork;
 	pthread_mutex_t	m_philo;
 	struct s_data	*data;
 }	t_philo;
